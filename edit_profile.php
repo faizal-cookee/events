@@ -9,7 +9,8 @@ $result = $conn->query($sql);
 if($result->num_rows > 0){
     $row=$result->fetch_assoc();
     if($row['profile_img']){
-        $profile_img = $row['profile_img'];
+        $profile_img="profiles/";
+        $profile_img = $profile_img . $row['profile_img'];
     }
     else{
         $profile_img = "images/user_img.png";
