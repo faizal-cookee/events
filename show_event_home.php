@@ -11,13 +11,13 @@ $filter=$_GET['filter'];
 
 switch($filter){
 
-    case 'expired':{$sql="SELECT * FROM new_event WHERE (status='Expired!' AND approve=1) ORDER BY id DESC";break;}  
-    case 'upcoming':{$sql="SELECT * FROM new_event WHERE (status='Upcoming!' AND approve=1) ORDER BY id DESC";break;}
-    case 'pri-high':{$sql="SELECT * FROM new_event WHERE (priority='High' AND approve=1) ORDER BY id DESC";break;}
-    case 'pri-med':{$sql="SELECT * FROM new_event WHERE (priority='Medium' AND approve=1) ORDER BY id DESC";break;}
-    case 'pri-low':{$sql="SELECT * FROM new_event WHERE (priority='Low' AND approve=1) ORDER BY id DESC";break;}
-    case 'all':{$sql="SELECT * FROM new_event WHERE approve=1 ORDER BY id DESC"; break;}
-    default:{$sql="SELECT * FROM new_event WHERE approve=1 ORDER BY id DESC"; break;}
+    case 'expired':{$sql="SELECT * FROM new_event WHERE (status='Expired!' AND approve=1 AND active=1) ORDER BY id DESC";break;}  
+    case 'upcoming':{$sql="SELECT * FROM new_event WHERE (status='Upcoming!' AND approve=1 AND active=1) ORDER BY id DESC";break;}
+    case 'pri-high':{$sql="SELECT * FROM new_event WHERE (priority='High' AND approve=1 AND active=1) ORDER BY id DESC";break;}
+    case 'pri-med':{$sql="SELECT * FROM new_event WHERE (priority='Medium' AND approve=1 AND active=1) ORDER BY id DESC";break;}
+    case 'pri-low':{$sql="SELECT * FROM new_event WHERE (priority='Low' AND approve=1 AND active=1) ORDER BY id DESC";break;}
+    case 'all':{$sql="SELECT * FROM new_event WHERE approve=1 AND active=1 ORDER BY id DESC"; break;}
+    default:{$sql="SELECT * FROM new_event WHERE approve=1 AND active=1 ORDER BY id DESC"; break;}
 
 }
 

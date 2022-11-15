@@ -141,11 +141,21 @@ require "connection.php"
               </div>
             </li>
             <li class="nav-item mx-2" >
-              <a href="admin_page.php?filter=approved" class="btn btn-success expired" >Approved</a>
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Status<i class="bi bi-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                  <a href="admin_page.php?filter=approved" class="btn btn-success dropdown-item" >Approved</a>
+                  <a href="admin_page.php?filter=not_approve" class=" dropdown-item btn btn-danger" >Not approved</a>
+                  <a href="admin_page.php?filter=enabled" class=" dropdown-item btn btn-success" >Enabled</a>
+                  <a href="admin_page.php?filter=disabled" class=" dropdown-item btn btn-danger" >Disabled</a>
+                  
+                </div>
+              </div>
             </li>
-            <li class="nav-item mx-2" >
-              <a href="admin_page.php?filter=not_approve" class="btn btn-danger expired" >Not approved</a>
-            </li>
+            
             <li class="nav-item mx-2" >
               <a href="customers_list.php" class="btn btn-outline-dark expired" >Customers</a>
             </li>
@@ -238,6 +248,8 @@ require "connection.php"
             case 'all':{$sql="SELECT * FROM new_event ORDER BY id DESC" ; break;}
             case 'not_approve':{$sql="SELECT * FROM new_event WHERE (approve=0) ORDER BY id DESC"; break;}
             case 'approved':{$sql="SELECT * FROM new_event WHERE (approve=1) ORDER BY id DESC"; break;}
+            case 'enabled':{$sql="SELECT * FROM new_event WHERE (active=1) ORDER BY id DESC"; break;}
+            case 'disabled':{$sql="SELECT * FROM new_event WHERE (active=0) ORDER BY id DESC"; break;}
             default:{$sql="SELECT * FROM new_event ORDER BY id DESC"; break;}
         
         }
@@ -261,17 +273,41 @@ require "connection.php"
                 <td><?= $row['priority'] ?></td>
                 <td><?= $row['author_name'] ?></td>
                 <td><a href="detailed_view.php?id=<?= $row['id'] ?>" class="btn btn-primary">View</a></td>
-                <?php if($row['approve'] == 0){
+                <td>
+
+                <div class="dropdown">
+                  <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Actions<i class="bi bi-chevron-down"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <?php if($row['approve'] == 0){
                   ?>
-                    <td><a href="admin_page.php?approve=1&approve_id=<?= $row['id'] ?>" class="btn btn-success">Approve</a></td>
-                <?php     
-                }
-                else{
-                  ?>
-                  <td><a href="admin_page.php?remove=1&remove_id=<?= $row['id'] ?>" class="btn btn-danger">Remove</a></td>
-                  <?php
-                }
-               ?> 
+                          <a class="dropdown-item btn btn-success" href="admin_page.php?approve=1&approve_id=<?= $row['id'] ?>">Approve</a>
+                      <?php     
+                      }
+                      else{
+                        ?>
+                        <a class="dropdown-item btn btn-danger" href="admin_page.php?remove=1&remove_id=<?= $row['id'] ?>">Remove</a>
+                        <?php
+                      }
+                      if($row['active'] == 0){
+ 
+                    ?>
+                    <a class="dropdown-item btn btn-success" href="admin_page.php?enable=1&enable_id=<?= $row['id'] ?>">Enable</a>
+                    <?php
+                      }
+                      else{
+                        ?>
+                        <a class="dropdown-item btn btn-danger" href="admin_page.php?disable=1&disable_id=<?= $row['id'] ?>">Disable</a>
+                        <?php
+                      }
+                      ?>
+                    
+                    
+                    
+                  </div>
+                </div>
+                </td> 
                 </tr>
         
         <?php 
@@ -299,6 +335,25 @@ if($remove_id){
     echo "<script>alert('event removed'); window.location.href='admin_page.php';</script>";
   }
 }
+
+$enable=@$_GET['enable'];
+$enable_id = @$_GET['enable_id'];
+if($enable){
+  $sql="UPDATE new_event SET active=1 WHERE id=$enable_id";
+  if($conn->query($sql)){
+    echo "<script>alert('event enabled'); window.location.href='admin_page.php';</script>";
+  }
+}
+
+$disable=@$_GET['disable'];
+$disable_id = @$_GET['disable_id'];
+if($disable){
+  $sql="UPDATE new_event SET active=0 WHERE id=$disable_id";
+  if($conn->query($sql)){
+    echo "<script>alert('event disabled'); window.location.href='admin_page.php';</script>";
+  }
+}
+
 
 
 
